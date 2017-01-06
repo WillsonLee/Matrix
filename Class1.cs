@@ -8,79 +8,9 @@ namespace MatrixTool
 {
     public class Matrix
     {
-        /// <summary>
-        /// 用于矩阵运算的矩阵类
-        /// 
-        /// 编写：李云新 2016.12.29
-        /// 
-        /// 一.初始化
-        /// 
-        /// *用法*
-        ///         Matrix m=new Matrix(double num);//单个数字初始化1*1矩阵
-        ///         Matrix m=new Matrix(new double[]{});//一维数组初始化行向量
-        ///         Matrix m=new Matrix(new double[,]{{}});//二位数组初始化矩阵
-        ///         Matrix m=new Matrix(Matrix inMatrix);//矩阵初始化另一个矩阵
-        /// *注意*
-        /// 1.这个类中把常数、向量都看成矩阵,单个数为1*1矩阵,行向量为1*n矩阵,列向量为n*1矩阵
-        /// 2.也可以不用初始化函数初始,可以使用Matrix中的静态函数得到某些特殊矩阵,方法同MATLAB
-        /// 3.矩阵使用时也可以像二维数组一样引用矩阵中元素,如m[i,j]为矩阵m中i行j列元素,i、j从0起编号
-        /// 
-        /// 二.方法
-        /// 
-        /// *用法*
-        ///         各函数基本用法同MATLAB中名称相同或相似函数
-        /// *注意*
-        ///
-        /// 三.方法列表
-        /// 
-        /// </summary>
         int rows;
         int columns;
         double[,] value;
-        private Matrix()//这是一个快速创建什么字段都没有初始化的矩阵对象的方法，只允许内部使用！
-        {
-
-        }
-        private Matrix(int rows, int cols)
-        {
-            this.rows = rows;
-            this.columns = cols;
-            this.value = new double[rows, cols];
-        }
-        public Matrix(double num)
-        {
-            rows = 1;
-            columns = 1;
-            value = new double[1, 1] { {num} };
-        }
-        public Matrix(double[] num)
-        {
-            rows = 1;
-            columns = num.GetLength(0);
-            value = new double[1,columns];
-            for (int i = 0; i < columns; i++)
-            {
-                value[0, i] = num[i];
-            }
-        }
-        public Matrix(double[,] num)
-        {
-            rows = num.GetLength(0);
-            columns = num.GetLength(1);
-            value = new double[rows, columns];
-            for (int i = 0; i < rows; i++)
-                for (int j = 0; j < columns; j++)
-                    value[i, j] = num[i, j];
-        }
-        public Matrix(Matrix inMatrix)
-        {
-            rows = inMatrix.rows;
-            columns = inMatrix.columns;
-            value = new double[rows, columns];
-            for (int i = 0; i < rows; i++)
-                for (int j = 0; j < columns; j++)
-                    value[i, j] = inMatrix.value[i, j];
-        }
         public int Rows
         {
             get
@@ -125,7 +55,53 @@ namespace MatrixTool
                 return this.value[i, j];
             }
         }
-        //一些特殊矩阵的生成方法，功能都类似MATLAB中对应函数
+        #region 构造函数
+        private Matrix()//这是一个快速创建什么字段都没有初始化的矩阵对象的方法，只允许内部使用！
+        {
+
+        }
+        private Matrix(int rows, int cols)
+        {
+            this.rows = rows;
+            this.columns = cols;
+            this.value = new double[rows, cols];
+        }
+        public Matrix(double num)
+        {
+            rows = 1;
+            columns = 1;
+            value = new double[1, 1] { {num} };
+        }
+        public Matrix(double[] num)
+        {
+            rows = 1;
+            columns = num.GetLength(0);
+            value = new double[1,columns];
+            for (int i = 0; i < columns; i++)
+            {
+                value[0, i] = num[i];
+            }
+        }
+        public Matrix(double[,] num)
+        {
+            rows = num.GetLength(0);
+            columns = num.GetLength(1);
+            value = new double[rows, columns];
+            for (int i = 0; i < rows; i++)
+                for (int j = 0; j < columns; j++)
+                    value[i, j] = num[i, j];
+        }
+        public Matrix(Matrix inMatrix)
+        {
+            rows = inMatrix.rows;
+            columns = inMatrix.columns;
+            value = new double[rows, columns];
+            for (int i = 0; i < rows; i++)
+                for (int j = 0; j < columns; j++)
+                    value[i, j] = inMatrix.value[i, j];
+        }
+        #endregion
+        #region 特殊矩阵生成
         public static Matrix Ones(int dimension)
         {
             Matrix result = new Matrix();
@@ -424,13 +400,36 @@ namespace MatrixTool
                                                 {0,-12*EI/(L*L*L),-6*EI/(L*L),0,12*EI/(L*L*L),-6*EI/(L*L)},
                                                 {0,6*EI/(L*L),2*EI/L,0,-6*EI/(L*L),4*EI/L}});
         }
-        //这个方法是自定义的随机数产生方法，辅助作用，与这个类并无太大关系
-        public static double GetRandomNum()
+        public static Matrix IncreaseVector(double begin, double end)
         {
-            Random ran = new Random(Guid.NewGuid().GetHashCode());
-            return ran.NextDouble();
+            Matrix result = Matrix.Zeros(1, (int)Math.Floor(Math.Abs(end - begin))+1);
+            double incre = end >= begin ? 1 : -1;
+            int i = 0;
+            for (double x = begin; i<result.columns; x += incre)
+            {
+                result.value[0, i++] = x;
+            }
+            return result;
         }
-        //矩阵的其他方法
+        public static Matrix IncreaseVector(double begin, double incre, double end)
+        {
+            if (end >= begin && incre < 0)
+                throw new Exception("IncreaseVector函数使用时试图由小数递减到大数");
+            if (end <= begin && incre > 0)
+                throw new Exception("IncreaseVector函数使用时试图由大数递增到小数");
+            if (incre == 0)
+                throw new Exception("IncreaseVector函数使用时递增量为0错误");
+            Matrix result = Matrix.Ones(1, (int)Math.Floor((end - begin) / incre) + 1);
+            double val = begin;
+            for (int i = 0; i < result.columns; i++)
+            {
+                result.value[0, i] = result.value[0, i] * val;
+                val += incre;
+            }
+            return result;
+        }
+        #endregion
+        #region 矩阵的控制台显示
         public void DisplayInConsole()
         {
             for(int i=0;i<rows;i++)
@@ -455,6 +454,8 @@ namespace MatrixTool
                         Console.WriteLine("]");
                 }
         }
+        #endregion
+        #region 矩阵的运算处理
         public static Matrix Reverse(Matrix x)
         {
             if (x.rows != x.columns)
@@ -1013,7 +1014,98 @@ namespace MatrixTool
         {
             return x;
         }
-        //矩阵的运算符重载
+        public static Matrix RowSwitch(Matrix x, int i, int j)
+        {
+            if (i <= x.rows && j <= x.rows)
+            {
+                Matrix result = new Matrix(x);
+                Matrix ele = Matrix.ElementarySwitch(x.rows, i, j);
+                if (i != j)
+                    result = ele * x;
+                return result;
+            }
+            else
+            {
+                throw new Exception("RowSwitch函数使用时,互换的行号不在0到最大行号减1之间");
+            }
+        }
+        public static Matrix ColumnSwitch(Matrix x, int i, int j)
+        {
+            if (i <= x.columns && j <= x.columns)
+            {
+                Matrix result = new Matrix(x);
+                Matrix ele = Matrix.ElementarySwitch(x.columns, i, j);
+                if (i != j)
+                    result = x * ele;
+                return result;
+            }
+            else
+            {
+                throw new Exception("ColumnSwitch函数使用时,互换的列号不在0到最大列号减1之间");
+            }
+        }
+        public static Matrix RowMultiple(Matrix x, int i, double k)
+        {
+            if (i <= x.rows)
+            {
+                Matrix ele = Matrix.ElementaryMultiple(x.rows, i, k);
+                Matrix result = ele * x;
+                return result;
+            }
+            else
+            {
+                throw new Exception("RowMultiple函数使用时,倍乘的行号不在0到最大行号减1之间");
+            }
+        }
+        public static Matrix ColumnMultiple(Matrix x, int i, double k)
+        {
+            if (i <= x.columns)
+            {
+                Matrix ele = Matrix.ElementaryMultiple(x.columns, i, k);
+                Matrix result = x * ele;
+                return result;
+            }
+            else
+            {
+                throw new Exception("ColumnMultiple函数使用时,倍乘的列号不在0到最大列号减1之间");
+            }
+        }
+        public static Matrix RowMulAdd(Matrix x, int i, double k, int j)//i行加k倍的j行
+        {
+            if (i <= x.rows && j <= x.rows)
+            {
+                Matrix result = new Matrix(x);
+                if (i != j)
+                {
+                    Matrix ele = Matrix.ElementaryMulAdd(x.rows, i, k, j);
+                    result = ele * x;
+                }
+                return result;
+            }
+            else
+            {
+                throw new Exception("RowMulAdd函数使用时,倍加的行号不在0到最大行号减1之间");
+            }
+        }
+        public static Matrix ColumnMulAdd(Matrix x, int i, double k, int j)//j列加k倍的i列
+        {
+            if (i <= x.columns && j <= x.columns)
+            {
+                Matrix result = new Matrix(x);
+                if (i != j)
+                {
+                    Matrix ele = Matrix.ElementaryMulAdd(x.columns, i, k, j);
+                    result = x * ele;
+                }
+                return result;
+            }
+            else
+            {
+                throw new Exception("ColumnMulAdd函数使用时,倍加的列号不在0到最大列号减1之间");
+            }
+        }
+        #endregion
+        #region 矩阵的运算符重载
         public static Matrix operator +(Matrix x, Matrix y)
         {
             if (x.rows != y.rows || x.columns != y.columns)
@@ -1261,96 +1353,279 @@ namespace MatrixTool
         {
             return Matrix.Reverse(x);
         }
-        //矩阵初等变换函数,以下6个
-        public static Matrix RowSwitch(Matrix x, int i, int j)
+        #endregion
+        #region Math函数矩阵参数实现
+        public static Matrix Abs(Matrix x)
         {
-            if (i <= x.rows && j <= x.rows)
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
             {
-                Matrix result = new Matrix(x);
-                Matrix ele = Matrix.ElementarySwitch(x.rows, i, j);
-                if (i != j)
-                    result = ele * x;
-                return result;
-            }
-            else
-            {
-                throw new Exception("RowSwitch函数使用时,互换的行号不在0到最大行号减1之间");
-            }
-        }
-        public static Matrix ColumnSwitch(Matrix x, int i, int j)
-        {
-            if (i <= x.columns && j <= x.columns)
-            {
-                Matrix result = new Matrix(x);
-                Matrix ele = Matrix.ElementarySwitch(x.columns, i, j);
-                if (i != j)
-                    result = x * ele;
-                return result;
-            }
-            else
-            {
-                throw new Exception("ColumnSwitch函数使用时,互换的列号不在0到最大列号减1之间");
-            }
-        }
-        public static Matrix RowMultiple(Matrix x, int i, double k)
-        {
-            if (i <= x.rows)
-            {
-                Matrix ele = Matrix.ElementaryMultiple(x.rows, i, k);
-                Matrix result = ele * x;
-                return result;
-            }
-            else
-            {
-                throw new Exception("RowMultiple函数使用时,倍乘的行号不在0到最大行号减1之间");
-            }
-        }
-        public static Matrix ColumnMultiple(Matrix x, int i, double k)
-        {
-            if (i <= x.columns)
-            {
-                Matrix ele = Matrix.ElementaryMultiple(x.columns, i, k);
-                Matrix result = x * ele;
-                return result;
-            }
-            else
-            {
-                throw new Exception("ColumnMultiple函数使用时,倍乘的列号不在0到最大列号减1之间");
-            }
-        }
-        public static Matrix RowMulAdd(Matrix x, int i, double k, int j)//i行加k倍的j行
-        {
-            if (i <= x.rows && j <= x.rows)
-            {
-                Matrix result = new Matrix(x);
-                if (i != j)
+                for (int j = 0; j < x.Columns; j++)
                 {
-                    Matrix ele = Matrix.ElementaryMulAdd(x.rows, i, k, j);
-                    result = ele * x;
+                    result[i, j] = Math.Abs(x[i, j]);
                 }
-                return result;
             }
-            else
-            {
-                throw new Exception("RowMulAdd函数使用时,倍加的行号不在0到最大行号减1之间");
-            }
+            return result;
         }
-        public static Matrix ColumnMulAdd(Matrix x, int i, double k, int j)//j列加k倍的i列
+        public static Matrix Acos(Matrix x)
         {
-            if (i <= x.columns && j <= x.columns)
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
             {
-                Matrix result = new Matrix(x);
-                if (i != j)
+                for (int j = 0; j < x.Columns; j++)
                 {
-                    Matrix ele = Matrix.ElementaryMulAdd(x.columns, i, k, j);
-                    result = x * ele;
+                    result[i, j] = Math.Acos(x[i, j]);
                 }
-                return result;
             }
-            else
-            {
-                throw new Exception("ColumnMulAdd函数使用时,倍加的列号不在0到最大列号减1之间");
-            }
+            return result;
         }
-    }//end Class Matrix
-}//end namespace
+        public static Matrix Asin(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Asin(x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Atan(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Atan(x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Ceiling(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Ceiling(x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Cos(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Cos(x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Cosh(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Cosh(x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Exp(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Exp(x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Floor(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Floor(x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Log(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Log(x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Log10(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Log10(x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Pow(Matrix x, Matrix y)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Pow(x[i, j], y[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Pow(Matrix x, double y)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Pow(x[i, j], y);
+                }
+            }
+            return result;
+        }
+        public static Matrix Pow(double y, Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Pow(y, x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Round(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Round(x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Sign(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Sign(x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Sin(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Sin(x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Sinh(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Sinh(x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Sqrt(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Sqrt(x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Tan(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Tan(x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Tanh(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Tanh(x[i, j]);
+                }
+            }
+            return result;
+        }
+        public static Matrix Truncate(Matrix x)
+        {
+            Matrix result = new Matrix(x);
+            for (int i = 0; i < x.Rows; i++)
+            {
+                for (int j = 0; j < x.Columns; j++)
+                {
+                    result[i, j] = Math.Truncate(x[i, j]);
+                }
+            }
+            return result;
+        }
+        #endregion
+        #region 其他函数
+        public static double GetRandomNum()
+        {
+            Random ran = new Random(Guid.NewGuid().GetHashCode());
+            return ran.NextDouble();
+        }
+        #endregion
+    }
+}
