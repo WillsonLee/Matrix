@@ -400,7 +400,7 @@ namespace MatrixTool
                                                 {0,-12*EI/(L*L*L),-6*EI/(L*L),0,12*EI/(L*L*L),-6*EI/(L*L)},
                                                 {0,6*EI/(L*L),2*EI/L,0,-6*EI/(L*L),4*EI/L}});
         }
-        public static Matrix IncreaseVector(double begin, double end)
+        public static Matrix RangeVector(double begin, double end)
         {
             Matrix result = Matrix.Zeros(1, (int)Math.Floor(Math.Abs(end - begin))+1);
             double incre = end >= begin ? 1 : -1;
@@ -411,7 +411,7 @@ namespace MatrixTool
             }
             return result;
         }
-        public static Matrix IncreaseVector(double begin, double incre, double end)
+        public static Matrix RangeVector(double begin, double incre, double end)
         {
             if (end >= begin && incre < 0)
                 throw new Exception("IncreaseVector函数使用时试图由小数递减到大数");
@@ -779,6 +779,36 @@ namespace MatrixTool
             {
                 result = Matrix.SetMatrixCol(result, i, colMatrix);
             }
+            return result;
+        }
+        public static Matrix AddRow(Matrix origin, Matrix rowMatrix)
+        {
+            if (rowMatrix.rows != 1)
+                throw new Exception("AddRow函数在使用时参数rowMatrix(第二个参数)不是行向量");
+            if (rowMatrix.columns != origin.columns)
+                throw new Exception
+                    ("AddRow函数在使用时参数origin(第一个参数)和rowMatrix(第二个参数)维数不一致,不可在orgin中添加rowMatrix行");
+            Matrix result = Matrix.Zeros(origin.rows + 1, origin.columns);
+            for (int i = 0; i < origin.rows; i++)
+            {
+                result = Matrix.SetMatrixRow(result, i, Matrix.GetRowVector(origin, i));
+            }
+            result = Matrix.SetMatrixRow(result, result.rows - 1, rowMatrix);
+            return result;
+        }
+        public static Matrix AddCol(Matrix origin, Matrix colMatrix)
+        {
+            if (colMatrix.columns != 1)
+                throw new Exception("AddCol函数在使用时参数colMatrix(第二个参数)不是列向量");
+            if (colMatrix.rows != origin.rows)
+                throw new Exception
+                    ("AddCol函数在使用时参数origin(第一个参数)和colMatrix(第二个参数)维数不一致,不可在orgin中添加colMatrix列");
+            Matrix result = Matrix.Zeros(origin.rows, origin.columns + 1);
+            for (int i = 0; i < origin.columns; i++)
+            {
+                result = Matrix.SetMatrixCol(result, i, Matrix.GetColVector(origin, i));
+            }
+            result = Matrix.SetMatrixCol(result, result.columns - 1, colMatrix);
             return result;
         }
         public static Matrix RemoveRow(Matrix x, int row)
