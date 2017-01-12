@@ -8,6 +8,9 @@ namespace MatrixTool
 {
     public class Matrix
     {
+        /// <summary>
+        ///         提供矩阵求逆、特殊变换和特殊矩阵生成的方法
+        /// </summary>
         int rows;
         int columns;
         double[,] value;
@@ -66,12 +69,20 @@ namespace MatrixTool
             this.columns = cols;
             this.value = new double[rows, cols];
         }
+        /// <summary>
+        ///         构造一个一行一列矩阵
+        /// </summary>
+        /// <param name="num"></param>
         public Matrix(double num)
         {
             rows = 1;
             columns = 1;
             value = new double[1, 1] { {num} };
         }
+        /// <summary>
+        ///         构造一个行向量
+        /// </summary>
+        /// <param name="num"></param>
         public Matrix(double[] num)
         {
             rows = 1;
@@ -82,6 +93,10 @@ namespace MatrixTool
                 value[0, i] = num[i];
             }
         }
+        /// <summary>
+        ///         以二维数组初始化一个矩阵
+        /// </summary>
+        /// <param name="num"></param>
         public Matrix(double[,] num)
         {
             rows = num.GetLength(0);
@@ -91,6 +106,10 @@ namespace MatrixTool
                 for (int j = 0; j < columns; j++)
                     value[i, j] = num[i, j];
         }
+        /// <summary>
+        ///         以指定矩阵初始化一个矩阵(产生一个内容相同引用不同的矩阵)
+        /// </summary>
+        /// <param name="inMatrix"></param>
         public Matrix(Matrix inMatrix)
         {
             rows = inMatrix.rows;
@@ -102,6 +121,11 @@ namespace MatrixTool
         }
         #endregion
         #region 特殊矩阵生成
+        /// <summary>
+        ///         生成一个指定阶的元素全为1的方阵
+        /// </summary>
+        /// <param name="dimension"></param>
+        /// <returns></returns>
         public static Matrix Ones(int dimension)
         {
             Matrix result = new Matrix();
@@ -113,6 +137,12 @@ namespace MatrixTool
                     result.value[i, j] = 1;
             return result;
         }
+        /// <summary>
+        ///         生成一个指定行列的元素全为1的矩阵
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <returns></returns>
         public static Matrix Ones(int row, int column)
         {
             Matrix result = new Matrix();
@@ -124,6 +154,11 @@ namespace MatrixTool
                     result.value[i, j] = 1;
             return result;
         }
+        /// <summary>
+        ///         生成一个指定阶数的单位矩阵
+        /// </summary>
+        /// <param name="dimension"></param>
+        /// <returns></returns>
         public static Matrix Eye(int dimension)
         {
             Matrix result = new Matrix();
@@ -140,6 +175,13 @@ namespace MatrixTool
                 }
             return result;
         }
+        /// <summary>
+        ///         生成一个互换初等矩阵
+        /// </summary>
+        /// <param name="dimension"></param>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <returns></returns>
         public static Matrix ElementarySwitch(int dimension, int i, int j)//互换初等矩阵,i、j行(列)互换
         {
             if (i >= dimension)
@@ -156,6 +198,13 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         生成一个倍乘初等矩阵
+        /// </summary>
+        /// <param name="dimension"></param>
+        /// <param name="i"></param>
+        /// <param name="k"></param>
+        /// <returns></returns>
         public static Matrix ElementaryMultiple(int dimension, int i, double k)//倍乘初等矩阵，k倍i行(列)
         {
             if (i >= dimension)
@@ -164,6 +213,14 @@ namespace MatrixTool
             result.value[i, i] = k * result.value[i, i];
             return result;
         }
+        /// <summary>
+        ///         生成一个倍加初等矩阵
+        /// </summary>
+        /// <param name="dimension"></param>
+        /// <param name="i"></param>
+        /// <param name="k"></param>
+        /// <param name="j"></param>
+        /// <returns></returns>
         public static Matrix ElementaryMulAdd(int dimension, int i, double k, int j)//倍加初等矩阵,i行加k倍的j行(j列加k倍i列)
         {
             if (i >= dimension)
@@ -177,6 +234,11 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         生成一个指定阶数的零矩阵
+        /// </summary>
+        /// <param name="dimension"></param>
+        /// <returns></returns>
         public static Matrix Zeros(int dimension)
         {
             Matrix result = new Matrix();
@@ -188,6 +250,12 @@ namespace MatrixTool
                     result.value[i, j] = 0;
             return result;
         }
+        /// <summary>
+        ///         生成一个指定行列数的零矩阵
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <returns></returns>
         public static Matrix Zeros(int row, int column)
         {
             Matrix result = new Matrix();
@@ -199,6 +267,11 @@ namespace MatrixTool
                     result.value[i, j] = 0;
             return result;
         }
+        /// <summary>
+        ///         生成一个指定阶数的伪随机数矩阵
+        /// </summary>
+        /// <param name="dimension"></param>
+        /// <returns></returns>
         public static Matrix Random(int dimension)
         {
             Matrix result = new Matrix();
@@ -210,6 +283,12 @@ namespace MatrixTool
                     result.value[i, j] = Matrix.GetRandomNum();
             return result;
         }
+        /// <summary>
+        ///         生成一个指定行列数的伪随机数矩阵
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <returns></returns>
         public static Matrix Random(int row, int column)
         {
             Matrix result = new Matrix();
@@ -221,6 +300,13 @@ namespace MatrixTool
                     result.value[i, j] = Matrix.GetRandomNum();
             return result;
         }
+        /// <summary>
+        ///         生成一个指定阶数和随机范围的伪随机数矩阵
+        /// </summary>
+        /// <param name="dimension"></param>
+        /// <param name="min">伪随机数下限</param>
+        /// <param name="max">伪随机数上限</param>
+        /// <returns></returns>
         public static Matrix Random(int dimension, double min, double max)
         {
             if (min > max)
@@ -238,6 +324,14 @@ namespace MatrixTool
                     result.value[i, j] = Matrix.GetRandomNum() * (max - min) + min;
             return result;
         }
+        /// <summary>
+        ///         生成一个指定行列数和伪随机数范围的矩阵
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <param name="min">伪随机数下限</param>
+        /// <param name="max">伪随机数上限</param>
+        /// <returns></returns>
         public static Matrix Random(int row, int column, double min, double max)
         {
             if (min > max)
@@ -257,6 +351,11 @@ namespace MatrixTool
                 }
             return result;
         }
+        /// <summary>
+        ///         生成一个由指定数组元素填充对角线的对角矩阵
+        /// </summary>
+        /// <param name="diag"></param>
+        /// <returns></returns>
         public static Matrix Diagonal(double[] diag)
         {
             Matrix result = Matrix.Zeros(diag.GetLength(0));
@@ -266,6 +365,13 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         生成一个指定对角元素和行列数的对角矩阵
+        /// </summary>
+        /// <param name="diag"></param>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <returns></returns>
         public static Matrix Diagonal(double[] diag,int row, int column)
         {
             Matrix result = Matrix.Zeros(row, column);
@@ -277,6 +383,12 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         生成一个指定对角元素和偏移量的对角矩阵
+        /// </summary>
+        /// <param name="diag"></param>
+        /// <param name="move">偏移量为正表示向右移,为负表示向左移</param>
+        /// <returns></returns>
         public static Matrix Diagonal(double[] diag, int move)
         {
             Matrix result = Matrix.Zeros(diag.GetLength(0));
@@ -288,6 +400,12 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         生成一个取参数矩阵上三角部分元素矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="fill">默认其他元素填充为0,可设置</param>
+        /// <returns></returns>
         public static Matrix TriUp(Matrix x, double fill = 0)//上三角
         {
             Matrix result = new Matrix(x);
@@ -303,6 +421,12 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         生成一个取参数矩阵下三角部分元素矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="fill">默认其他元素填充为0,可设置</param>
+        /// <returns></returns>
         public static Matrix TriLow(Matrix x, double fill = 0)//下三角
         {
             Matrix result = new Matrix(x);
@@ -318,6 +442,12 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         生成一个对称矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="reverse">默认为false,为true表示保留下三角部分元素</param>
+        /// <returns></returns>
         public static Matrix Symmetry(Matrix x, bool reverse=false)//对称,inverse参数表示将上三角(下三角)对称到下方(上方)
         {
             Matrix result = new Matrix(x);
@@ -351,6 +481,12 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         生成一个反对称矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="reverse">默认为false,为true表示保留下三角部分元素</param>
+        /// <returns></returns>
         public static Matrix Antisymmetry(Matrix x, bool reverse = false)//反对称,inverse参数表示将上三角(下三角)反对称到下方(上方)
         {
             Matrix result = new Matrix(x);
@@ -386,6 +522,11 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         生成一个平面坐标旋转变换矩阵(结构力学中由局部坐标系到整体坐标系转换)
+        /// </summary>
+        /// <param name="angle">顺时针旋转角度值(不是弧度)</param>
+        /// <returns></returns>
         public static Matrix TransMatrix(double angle)//转换矩阵,结构力学局部坐标系到整体坐标系转换
         {
             double cosVal = Math.Cos(angle * Math.PI / 180);
@@ -393,6 +534,13 @@ namespace MatrixTool
             return new Matrix(new double[6, 6]{{cosVal,sinVal,0,0,0,0},{-sinVal,cosVal,0,0,0,0},{0,0,1,0,0,0},
                                                 {0,0,0,cosVal,sinVal,0},{0,0,0,-sinVal,cosVal,0},{0,0,0,0,0,1}});
         }
+        /// <summary>
+        ///         生成一个平面刚架计算的刚度矩阵(结构力学)
+        /// </summary>
+        /// <param name="EI">弯曲刚度</param>
+        /// <param name="EA">拉压刚度</param>
+        /// <param name="L">刚架长度</param>
+        /// <returns></returns>
         public static Matrix StiffnessMatrix(double EI, double EA,double L)//刚度矩阵//结构力学
         {
             return new Matrix(new double[6, 6]{{EA/L,0,0,-EA/L,0,0},{0,12*EI/(L*L*L),6*EI/(L*L),0,-12*EI/(L*L*L),6*EI/(L*L)},
@@ -400,6 +548,12 @@ namespace MatrixTool
                                                 {0,-12*EI/(L*L*L),-6*EI/(L*L),0,12*EI/(L*L*L),-6*EI/(L*L)},
                                                 {0,6*EI/(L*L),2*EI/L,0,-6*EI/(L*L),4*EI/L}});
         }
+        /// <summary>
+        ///         生成一个指定范围行向量(默认步距为1)
+        /// </summary>
+        /// <param name="begin">起始值</param>
+        /// <param name="end">终止值</param>
+        /// <returns></returns>
         public static Matrix RangeVector(double begin, double end)
         {
             Matrix result = Matrix.Zeros(1, (int)Math.Floor(Math.Abs(end - begin))+1);
@@ -411,6 +565,13 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         生成一个指定范围和步距的行向量
+        /// </summary>
+        /// <param name="begin">起始值</param>
+        /// <param name="incre">步距</param>
+        /// <param name="end">终止值</param>
+        /// <returns></returns>
         public static Matrix RangeVector(double begin, double incre, double end)
         {
             if (end >= begin && incre < 0)
@@ -428,8 +589,43 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         生成一个线性空间行向量
+        /// </summary>
+        /// <param name="begin">起始值</param>
+        /// <param name="end">终止值</param>
+        /// <param name="num">元素个数</param>
+        /// <returns></returns>
+        public static Matrix LinspaceVector(double begin, double end, int num)
+        {
+            Matrix result = new Matrix(1, num + 1);
+            for (int i = 0; i <= num; i++)
+            {
+                result.value[0, i] = i * (end - begin) / num + begin;
+            }
+            return result;
+        }
+        /// <summary>
+        ///         生成一个对数空间行向量
+        /// </summary>
+        /// <param name="begin">起始值</param>
+        /// <param name="end">终止值</param>
+        /// <param name="num">元素个数</param>
+        /// <returns></returns>
+        public static Matrix LogspaceVector(double begin, double end, int num)
+        {
+            Matrix result = new Matrix(1, num + 1);
+            for (int i = 0; i <= num; i++)
+            {
+                result.value[0, i] = Math.Pow(10, i * (end - begin) / num + begin);
+            }
+            return result;
+        }
         #endregion
         #region 矩阵的控制台显示
+        /// <summary>
+        ///         在控制台显示矩阵
+        /// </summary>
         public void DisplayInConsole()
         {
             for(int i=0;i<rows;i++)
@@ -442,6 +638,9 @@ namespace MatrixTool
                         Console.WriteLine("]");
                 }
         }
+        /// <summary>
+        ///         在控制台显示矩阵(元素取四位小数)
+        /// </summary>
         public void DisplayLimited()
         {
             for (int i = 0; i < rows; i++)
@@ -456,6 +655,26 @@ namespace MatrixTool
         }
         #endregion
         #region 矩阵的运算处理
+        /// <summary>
+        ///         返回参数矩阵的对角元素
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        public static double[] Diagonal(Matrix x)//其实是生成对角矩阵方法的反方法,取矩阵的对角元素
+        {
+            int num = x.rows > x.columns ? x.columns : x.rows;
+            double[] result = new double[num];
+            for (int i = 0; i < num; i++)
+            {
+                result[i] = x.value[i, i];
+            }
+            return result;
+        }
+        /// <summary>
+        ///         返回参数矩阵的逆矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static Matrix Reverse(Matrix x)
         {
             if (x.rows != x.columns)
@@ -473,6 +692,13 @@ namespace MatrixTool
             detVal = 1 / detVal;
             return -(Matrix.CompanionMatrix(x) * detVal);//不知道为什么，答案就是差个负号
         }
+        /// <summary>
+        ///         返回参数矩阵i行j列的余子式
+        /// </summary>
+        /// <param name="x">注意必须为方阵</param>
+        /// <param name="i">i从0起到行数减1</param>
+        /// <param name="j">j从0起到列数减1</param>
+        /// <returns></returns>
         public static double Cofactor(Matrix x, int i, int j)//求逆的辅助函数，求余子式，注意判断行列数相同
         {
             double[,] array = new double[x.rows - 1, x.columns - 1];
@@ -491,10 +717,22 @@ namespace MatrixTool
             Matrix cofactor = new Matrix(array);
             return Matrix.Det(cofactor);
         }
+        /// <summary>
+        ///         返回参数矩阵的代数余子式
+        /// </summary>
+        /// <param name="x">注意必须为方阵</param>
+        /// <param name="i">i从0起到行数减1</param>
+        /// <param name="j">j从0起到列数减1</param>
+        /// <returns></returns>
         public static double AlgeCofactor(Matrix x, int i, int j)//代数余子式
         {
             return Math.Pow(-1, i + j) * Matrix.Cofactor(x, i, j);
         }
+        /// <summary>
+        ///         返回参数矩阵的伴随矩阵
+        /// </summary>
+        /// <param name="x">注意必须为方阵</param>
+        /// <returns></returns>
         public static Matrix CompanionMatrix(Matrix x)//伴随矩阵
         {
             double[,] array = new double[x.rows, x.columns];
@@ -507,6 +745,11 @@ namespace MatrixTool
             }
             return Matrix.Transfer(new Matrix(array));
         }
+        /// <summary>
+        ///         返回参数矩阵的转置矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static Matrix Transfer(Matrix x)
         {
             Matrix result = new Matrix();
@@ -518,7 +761,12 @@ namespace MatrixTool
                     result.value[i, j] = x.value[j, i];
             return result;
         }
-        public static double Det(Matrix x)//使用前一定要判断行数、列数是否相等！
+        /// <summary>
+        ///         返回参数矩阵的行列式值
+        /// </summary>
+        /// <param name="x">注意必须为方阵</param>
+        /// <returns></returns>
+        public static double Det(Matrix x)
         {
             if(x.rows!=x.columns)
                 throw new Exception("Det函数使用时,矩阵不为方阵不可求行列式");
@@ -535,7 +783,14 @@ namespace MatrixTool
                 return leftup * Matrix.Det(temp);
             }
         }
-        //取前i行j列或从第i行j列起取//reverse参数表示是否取矩阵后i行j列子矩阵,注意这里i,j不从0起
+        /// <summary>
+        ///         返回参数矩阵的前i行j列子阵或i行j列后的子阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="i">i从0起到行数减1</param>
+        /// <param name="j">j从0起到列数减1</param>
+        /// <param name="reverse">为true则为取i行j列之后子阵</param>
+        /// <returns></returns>
         public static Matrix SubMatrix(Matrix x, int i, int j, bool reverse = false)
         {
             Matrix result = new Matrix(x);
@@ -564,6 +819,11 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回参数矩阵转换的阶梯矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static Matrix ToStepMatrix(Matrix x)
         {
             Matrix result = new Matrix(x);
@@ -640,6 +900,12 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回参数矩阵的元素相乘运算
+        /// </summary>
+        /// <param name="x">必须与后一个矩阵同阶</param>
+        /// <param name="y">必须与前一个矩阵同阶</param>
+        /// <returns></returns>
         public static Matrix DotMultiple(Matrix x, Matrix y)
         {
             if (x.rows != y.rows || x.columns != y.columns)
@@ -654,6 +920,12 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回参数矩阵的元素相除运算
+        /// </summary>
+        /// <param name="x">必须与后一个矩阵同阶</param>
+        /// <param name="y">必须与前一个矩阵同阶</param>
+        /// <returns></returns>
         public static Matrix DotDevide(Matrix x, Matrix y)
         {
             if (x.rows != y.rows || x.columns != y.columns)
@@ -668,6 +940,13 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回参数矩阵重组矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="row">重组后的行数</param>
+        /// <param name="col">重组后的列数</param>
+        /// <returns></returns>
         public static Matrix Reshape(Matrix x, int row, int col)
         {
             //row*col<x.rows*x.columns则取x的前row*col项重组,否则把x全部取出重组,不够的用0补
@@ -703,6 +982,11 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回参数矩阵每一行连接成的double数组
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static double[] ToRowVector(Matrix x)
         {
             double[] result = new double[x.rows * x.columns];
@@ -715,6 +999,12 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回参数矩阵的指定行向量
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="row">row从0起到行数减1</param>
+        /// <returns></returns>
         public static Matrix GetRowVector(Matrix x, int row)//获取row行向量
         {
             Matrix result = new Matrix(1, x.columns);
@@ -724,6 +1014,12 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回参数矩阵的指定列向量
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="col">col从0起到列数减1</param>
+        /// <returns></returns>
         public static Matrix GetColVector(Matrix x, int col)//获取col列向量
         {
             Matrix result = new Matrix(x.rows, 1);
@@ -733,6 +1029,13 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回将参数矩阵指定行设为指定行向量的矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="row">row从0起到行数减1</param>
+        /// <param name="rowMatrix">行向量列数必须与参数矩阵相同</param>
+        /// <returns></returns>
         public static Matrix SetMatrixRow(Matrix x, int row, Matrix rowMatrix)
         {
             if (rowMatrix.rows != 1)
@@ -748,6 +1051,12 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回将参数矩阵全部行设为指定行向量的矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="rowMatrix">行向量的列数必须与参数矩阵列数相同</param>
+        /// <returns></returns>
         public static Matrix SetMatrixRow(Matrix x, Matrix rowMatrix)
         {
             Matrix result = new Matrix(x);
@@ -757,6 +1066,13 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回将参数矩阵指定列设为指定列向量的矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="col">col从0起到列数减1</param>
+        /// <param name="colMatrix">列向量行数必须与参数矩阵行数相同</param>
+        /// <returns></returns>
         public static Matrix SetMatrixCol(Matrix x, int col, Matrix colMatrix)
         {
             if (colMatrix.columns != 1)
@@ -772,6 +1088,12 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回将参数矩阵全部列设为指定列向量的矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="colMatrix">列向量的行数必须与参数矩阵行数相同</param>
+        /// <returns></returns>
         public static Matrix SetMatrixCol(Matrix x, Matrix colMatrix)
         {
             Matrix result = new Matrix(x);
@@ -781,6 +1103,12 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回将参数矩阵增加一个行向量的矩阵
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="rowMatrix">增加的行向量必须与参数矩阵列数相同</param>
+        /// <returns></returns>
         public static Matrix AddRow(Matrix origin, Matrix rowMatrix)
         {
             if (rowMatrix.rows != 1)
@@ -796,6 +1124,12 @@ namespace MatrixTool
             result = Matrix.SetMatrixRow(result, result.rows - 1, rowMatrix);
             return result;
         }
+        /// <summary>
+        ///         返回将参数矩阵增加一个列向量的矩阵
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="colMatrix">增加的列向量必须与参数矩阵行数相同</param>
+        /// <returns></returns>
         public static Matrix AddCol(Matrix origin, Matrix colMatrix)
         {
             if (colMatrix.columns != 1)
@@ -811,6 +1145,12 @@ namespace MatrixTool
             result = Matrix.SetMatrixCol(result, result.columns - 1, colMatrix);
             return result;
         }
+        /// <summary>
+        ///         返回参数矩阵移去指定行的矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="row"></param>
+        /// <returns></returns>
         public static Matrix RemoveRow(Matrix x, int row)
         {
             Matrix result=new Matrix(x);
@@ -823,6 +1163,12 @@ namespace MatrixTool
             result = Matrix.SubMatrix(result, result.rows - 1, result.columns);
             return result;
         }
+        /// <summary>
+        ///         返回参数矩阵移去指定列的矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
         public static Matrix RemoveCol(Matrix x, int col)
         {
             Matrix result = new Matrix(x);
@@ -835,6 +1181,11 @@ namespace MatrixTool
             result = Matrix.SubMatrix(result, result.rows, result.columns - 1);
             return result;
         }
+        /// <summary>
+        ///         返回参数矩阵每一行最小值组成的列向量
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static Matrix MinOfRow(Matrix x)//每一行最小
         {
             Matrix result = new Matrix(x.rows, 1);
@@ -851,6 +1202,11 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回参数矩阵每一行的最大值组成的列向量
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static Matrix MaxOfRow(Matrix x)//每一行最大
         {
             Matrix result = new Matrix(x.rows, 1);
@@ -867,6 +1223,11 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回参数矩阵每一列最小值组成的行向量
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static Matrix MinOfCol(Matrix x)//每一列最小
         {
             Matrix result = new Matrix(1, x.columns);
@@ -883,6 +1244,11 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回参数矩阵每一列最大值组成的行向量
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static Matrix MaxOfCol(Matrix x)//每一列最大
         {
             Matrix result = new Matrix(1, x.columns);
@@ -899,6 +1265,11 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回参数矩阵所有行加到第一行组成的行向量
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static Matrix SumRow(Matrix x)//所有行加到第一行
         {
             Matrix result = Matrix.GetRowVector(x, 0);
@@ -908,6 +1279,11 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回参数矩阵所有列加到第一列组成的列向量
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static Matrix SumCol(Matrix x)//所有列加到第一列
         {
             Matrix result = Matrix.GetColVector(x, 0);
@@ -917,6 +1293,11 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回参数向量各元素总和
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static double SumVector(Matrix x)//向量求和
         {
             if (x.rows == 1)
@@ -942,6 +1323,11 @@ namespace MatrixTool
                 throw new Exception("SumVector函数使用时,对非向量求向量和");
             }
         }
+        /// <summary>
+        ///         返回一个两列矩阵,第一列为参数矩阵每一行最小值,第二列为参数矩阵每一行最大值
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static Matrix MapMinMaxRow(Matrix x)
         {
             Matrix result = new Matrix(x.rows, 2);
@@ -951,6 +1337,11 @@ namespace MatrixTool
             result = Matrix.SetMatrixCol(result, 1, max);
             return result;
         }
+        /// <summary>
+        ///         返回一个两行矩阵,第一行为参数矩阵每一列最小值,第二行为参数矩阵每一列最大值
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static Matrix MapMinMaxOnCol(Matrix x)
         {
             Matrix result = new Matrix(2, x.columns);
@@ -960,24 +1351,11 @@ namespace MatrixTool
             result = Matrix.SetMatrixRow(result, 1, max);
             return result;
         }
-        public static Matrix LinspaceVector(double begin, double end, int num)
-        {
-            Matrix result = new Matrix(1, num + 1);
-            for (int i = 0; i <= num; i++)
-            {
-                result.value[0, i] = i * (end - begin) / num + begin;
-            }
-            return result;
-        }
-        public static Matrix LogspaceVector(double begin, double end, int num)
-        {
-            Matrix result = new Matrix(1, num + 1);
-            for (int i = 0; i <= num; i++)
-            {
-                result.value[0, i] = Math.Pow(10, i * (end - begin) / num + begin);
-            }
-            return result;
-        }
+        /// <summary>
+        ///         返回将参数矩阵每一个元素取为正号的矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static Matrix Positive(Matrix x)//对矩阵取绝对值
         {
             Matrix result = new Matrix(x);
@@ -993,6 +1371,11 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回将参数矩阵每一个元素取为负号的矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static Matrix Negative(Matrix x)
         {
             Matrix result = new Matrix(x);
@@ -1008,6 +1391,11 @@ namespace MatrixTool
             }
             return result;
         }
+        /// <summary>
+        ///         返回参数矩阵的秩
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public static int Rank(Matrix x)
         {
             int result = x.rows;
@@ -1032,18 +1420,13 @@ namespace MatrixTool
             }
             return result;
         }
-        public static double[] Eigenvalue(Matrix x)
-        {
-            return new double[x.rows];
-        }
-        public static Matrix Eigenvector(Matrix x)
-        {
-            return x;
-        }
-        public static Matrix SimilarTransfer(Matrix x)
-        {
-            return x;
-        }
+        /// <summary>
+        ///         返回将参数矩阵指定行互换的矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <returns></returns>
         public static Matrix RowSwitch(Matrix x, int i, int j)
         {
             if (i <= x.rows && j <= x.rows)
@@ -1059,6 +1442,13 @@ namespace MatrixTool
                 throw new Exception("RowSwitch函数使用时,互换的行号不在0到最大行号减1之间");
             }
         }
+        /// <summary>
+        ///         返回将参数矩阵指定列互换的矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <returns></returns>
         public static Matrix ColumnSwitch(Matrix x, int i, int j)
         {
             if (i <= x.columns && j <= x.columns)
@@ -1074,6 +1464,13 @@ namespace MatrixTool
                 throw new Exception("ColumnSwitch函数使用时,互换的列号不在0到最大列号减1之间");
             }
         }
+        /// <summary>
+        ///         返回将参数矩阵指定行倍乘的矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="i">指定行</param>
+        /// <param name="k">倍乘倍数</param>
+        /// <returns></returns>
         public static Matrix RowMultiple(Matrix x, int i, double k)
         {
             if (i <= x.rows)
@@ -1087,6 +1484,13 @@ namespace MatrixTool
                 throw new Exception("RowMultiple函数使用时,倍乘的行号不在0到最大行号减1之间");
             }
         }
+        /// <summary>
+        ///         返回将采参数矩阵指定列倍乘的矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="i">指定列</param>
+        /// <param name="k">倍乘倍数</param>
+        /// <returns></returns>
         public static Matrix ColumnMultiple(Matrix x, int i, double k)
         {
             if (i <= x.columns)
@@ -1100,6 +1504,14 @@ namespace MatrixTool
                 throw new Exception("ColumnMultiple函数使用时,倍乘的列号不在0到最大列号减1之间");
             }
         }
+        /// <summary>
+        ///         返回参数矩阵指定行的倍加矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="i">目标行</param>
+        /// <param name="k">倍数</param>
+        /// <param name="j">源行</param>
+        /// <returns></returns>
         public static Matrix RowMulAdd(Matrix x, int i, double k, int j)//i行加k倍的j行
         {
             if (i <= x.rows && j <= x.rows)
@@ -1117,6 +1529,14 @@ namespace MatrixTool
                 throw new Exception("RowMulAdd函数使用时,倍加的行号不在0到最大行号减1之间");
             }
         }
+        /// <summary>
+        ///         返回参数矩阵指定列的倍加矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="i">目标列</param>
+        /// <param name="k">倍数</param>
+        /// <param name="j">源列</param>
+        /// <returns></returns>
         public static Matrix ColumnMulAdd(Matrix x, int i, double k, int j)//j列加k倍的i列
         {
             if (i <= x.columns && j <= x.columns)
@@ -1384,7 +1804,7 @@ namespace MatrixTool
             return Matrix.Reverse(x);
         }
         #endregion
-        #region Math函数矩阵参数实现
+        #region Math函数实现矩阵做参数
         public static Matrix Abs(Matrix x)
         {
             Matrix result = new Matrix(x);
@@ -1651,6 +2071,10 @@ namespace MatrixTool
         }
         #endregion
         #region 其他函数
+        /// <summary>
+        ///         返回一个伪随机数
+        /// </summary>
+        /// <returns></returns>
         public static double GetRandomNum()
         {
             Random ran = new Random(Guid.NewGuid().GetHashCode());

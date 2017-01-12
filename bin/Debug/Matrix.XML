@@ -1,0 +1,583 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Matrix</name>
+    </assembly>
+    <members>
+        <member name="F:MatrixTool.Matrix.rows">
+            <summary>
+                    提供矩阵求逆、特殊变换和特殊矩阵生成的方法
+            </summary>
+        </member>
+        <member name="M:MatrixTool.Matrix.#ctor(System.Double)">
+            <summary>
+                    构造一个一行一列矩阵
+            </summary>
+            <param name="num"></param>
+        </member>
+        <member name="M:MatrixTool.Matrix.#ctor(System.Double[])">
+            <summary>
+                    构造一个行向量
+            </summary>
+            <param name="num"></param>
+        </member>
+        <member name="M:MatrixTool.Matrix.#ctor(System.Double[0:,0:])">
+            <summary>
+                    以二维数组初始化一个矩阵
+            </summary>
+            <param name="num"></param>
+        </member>
+        <member name="M:MatrixTool.Matrix.#ctor(MatrixTool.Matrix)">
+            <summary>
+                    以指定矩阵初始化一个矩阵(产生一个内容相同引用不同的矩阵)
+            </summary>
+            <param name="inMatrix"></param>
+        </member>
+        <member name="M:MatrixTool.Matrix.Ones(System.Int32)">
+            <summary>
+                    生成一个指定阶的元素全为1的方阵
+            </summary>
+            <param name="dimension"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Ones(System.Int32,System.Int32)">
+            <summary>
+                    生成一个指定行列的元素全为1的矩阵
+            </summary>
+            <param name="row"></param>
+            <param name="column"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Eye(System.Int32)">
+            <summary>
+                    生成一个指定阶数的单位矩阵
+            </summary>
+            <param name="dimension"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.ElementarySwitch(System.Int32,System.Int32,System.Int32)">
+            <summary>
+                    生成一个互换初等矩阵
+            </summary>
+            <param name="dimension"></param>
+            <param name="i"></param>
+            <param name="j"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.ElementaryMultiple(System.Int32,System.Int32,System.Double)">
+            <summary>
+                    生成一个倍乘初等矩阵
+            </summary>
+            <param name="dimension"></param>
+            <param name="i"></param>
+            <param name="k"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.ElementaryMulAdd(System.Int32,System.Int32,System.Double,System.Int32)">
+            <summary>
+                    生成一个倍加初等矩阵
+            </summary>
+            <param name="dimension"></param>
+            <param name="i"></param>
+            <param name="k"></param>
+            <param name="j"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Zeros(System.Int32)">
+            <summary>
+                    生成一个指定阶数的零矩阵
+            </summary>
+            <param name="dimension"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Zeros(System.Int32,System.Int32)">
+            <summary>
+                    生成一个指定行列数的零矩阵
+            </summary>
+            <param name="row"></param>
+            <param name="column"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Random(System.Int32)">
+            <summary>
+                    生成一个指定阶数的伪随机数矩阵
+            </summary>
+            <param name="dimension"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Random(System.Int32,System.Int32)">
+            <summary>
+                    生成一个指定行列数的伪随机数矩阵
+            </summary>
+            <param name="row"></param>
+            <param name="column"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Random(System.Int32,System.Double,System.Double)">
+            <summary>
+                    生成一个指定阶数和随机范围的伪随机数矩阵
+            </summary>
+            <param name="dimension"></param>
+            <param name="min">伪随机数下限</param>
+            <param name="max">伪随机数上限</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Random(System.Int32,System.Int32,System.Double,System.Double)">
+            <summary>
+                    生成一个指定行列数和伪随机数范围的矩阵
+            </summary>
+            <param name="row"></param>
+            <param name="column"></param>
+            <param name="min">伪随机数下限</param>
+            <param name="max">伪随机数上限</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Diagonal(System.Double[])">
+            <summary>
+                    生成一个由指定数组元素填充对角线的对角矩阵
+            </summary>
+            <param name="diag"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Diagonal(System.Double[],System.Int32,System.Int32)">
+            <summary>
+                    生成一个指定对角元素和行列数的对角矩阵
+            </summary>
+            <param name="diag"></param>
+            <param name="row"></param>
+            <param name="column"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Diagonal(System.Double[],System.Int32)">
+            <summary>
+                    生成一个指定对角元素和偏移量的对角矩阵
+            </summary>
+            <param name="diag"></param>
+            <param name="move">偏移量为正表示向右移,为负表示向左移</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.TriUp(MatrixTool.Matrix,System.Double)">
+            <summary>
+                    生成一个取参数矩阵上三角部分元素矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="fill">默认其他元素填充为0,可设置</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.TriLow(MatrixTool.Matrix,System.Double)">
+            <summary>
+                    生成一个取参数矩阵下三角部分元素矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="fill">默认其他元素填充为0,可设置</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Symmetry(MatrixTool.Matrix,System.Boolean)">
+            <summary>
+                    生成一个对称矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="reverse">默认为false,为true表示保留下三角部分元素</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Antisymmetry(MatrixTool.Matrix,System.Boolean)">
+            <summary>
+                    生成一个反对称矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="reverse">默认为false,为true表示保留下三角部分元素</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.TransMatrix(System.Double)">
+            <summary>
+                    生成一个平面坐标旋转变换矩阵(结构力学中由局部坐标系到整体坐标系转换)
+            </summary>
+            <param name="angle">顺时针旋转角度值(不是弧度)</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.StiffnessMatrix(System.Double,System.Double,System.Double)">
+            <summary>
+                    生成一个平面刚架计算的刚度矩阵(结构力学)
+            </summary>
+            <param name="EI">弯曲刚度</param>
+            <param name="EA">拉压刚度</param>
+            <param name="L">刚架长度</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.RangeVector(System.Double,System.Double)">
+            <summary>
+                    生成一个指定范围行向量(默认步距为1)
+            </summary>
+            <param name="begin">起始值</param>
+            <param name="end">终止值</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.RangeVector(System.Double,System.Double,System.Double)">
+            <summary>
+                    生成一个指定范围和步距的行向量
+            </summary>
+            <param name="begin">起始值</param>
+            <param name="incre">步距</param>
+            <param name="end">终止值</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.LinspaceVector(System.Double,System.Double,System.Int32)">
+            <summary>
+                    生成一个线性空间行向量
+            </summary>
+            <param name="begin">起始值</param>
+            <param name="end">终止值</param>
+            <param name="num">元素个数</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.LogspaceVector(System.Double,System.Double,System.Int32)">
+            <summary>
+                    生成一个对数空间行向量
+            </summary>
+            <param name="begin">起始值</param>
+            <param name="end">终止值</param>
+            <param name="num">元素个数</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.DisplayInConsole">
+            <summary>
+                    在控制台显示矩阵
+            </summary>
+        </member>
+        <member name="M:MatrixTool.Matrix.DisplayLimited">
+            <summary>
+                    在控制台显示矩阵(元素取四位小数)
+            </summary>
+        </member>
+        <member name="M:MatrixTool.Matrix.Diagonal(MatrixTool.Matrix)">
+            <summary>
+                    返回参数矩阵的对角元素
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Reverse(MatrixTool.Matrix)">
+            <summary>
+                    返回参数矩阵的逆矩阵
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Cofactor(MatrixTool.Matrix,System.Int32,System.Int32)">
+            <summary>
+                    返回参数矩阵i行j列的余子式
+            </summary>
+            <param name="x">注意必须为方阵</param>
+            <param name="i">i从0起到行数减1</param>
+            <param name="j">j从0起到列数减1</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.AlgeCofactor(MatrixTool.Matrix,System.Int32,System.Int32)">
+            <summary>
+                    返回参数矩阵的代数余子式
+            </summary>
+            <param name="x">注意必须为方阵</param>
+            <param name="i">i从0起到行数减1</param>
+            <param name="j">j从0起到列数减1</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.CompanionMatrix(MatrixTool.Matrix)">
+            <summary>
+                    返回参数矩阵的伴随矩阵
+            </summary>
+            <param name="x">注意必须为方阵</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Transfer(MatrixTool.Matrix)">
+            <summary>
+                    返回参数矩阵的转置矩阵
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Det(MatrixTool.Matrix)">
+            <summary>
+                    返回参数矩阵的行列式值
+            </summary>
+            <param name="x">注意必须为方阵</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.SubMatrix(MatrixTool.Matrix,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+                    返回参数矩阵的前i行j列子阵或i行j列后的子阵
+            </summary>
+            <param name="x"></param>
+            <param name="i">i从0起到行数减1</param>
+            <param name="j">j从0起到列数减1</param>
+            <param name="reverse">为true则为取i行j列之后子阵</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.ToStepMatrix(MatrixTool.Matrix)">
+            <summary>
+                    返回参数矩阵转换的阶梯矩阵
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.DotMultiple(MatrixTool.Matrix,MatrixTool.Matrix)">
+            <summary>
+                    返回参数矩阵的元素相乘运算
+            </summary>
+            <param name="x">必须与后一个矩阵同阶</param>
+            <param name="y">必须与前一个矩阵同阶</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.DotDevide(MatrixTool.Matrix,MatrixTool.Matrix)">
+            <summary>
+                    返回参数矩阵的元素相除运算
+            </summary>
+            <param name="x">必须与后一个矩阵同阶</param>
+            <param name="y">必须与前一个矩阵同阶</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Reshape(MatrixTool.Matrix,System.Int32,System.Int32)">
+            <summary>
+                    返回参数矩阵重组矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="row">重组后的行数</param>
+            <param name="col">重组后的列数</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.ToRowVector(MatrixTool.Matrix)">
+            <summary>
+                    返回参数矩阵每一行连接成的double数组
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.GetRowVector(MatrixTool.Matrix,System.Int32)">
+            <summary>
+                    返回参数矩阵的指定行向量
+            </summary>
+            <param name="x"></param>
+            <param name="row">row从0起到行数减1</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.GetColVector(MatrixTool.Matrix,System.Int32)">
+            <summary>
+                    返回参数矩阵的指定列向量
+            </summary>
+            <param name="x"></param>
+            <param name="col">col从0起到列数减1</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.SetMatrixRow(MatrixTool.Matrix,System.Int32,MatrixTool.Matrix)">
+            <summary>
+                    返回将参数矩阵指定行设为指定行向量的矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="row">row从0起到行数减1</param>
+            <param name="rowMatrix">行向量列数必须与参数矩阵相同</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.SetMatrixRow(MatrixTool.Matrix,MatrixTool.Matrix)">
+            <summary>
+                    返回将参数矩阵全部行设为指定行向量的矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="rowMatrix">行向量的列数必须与参数矩阵列数相同</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.SetMatrixCol(MatrixTool.Matrix,System.Int32,MatrixTool.Matrix)">
+            <summary>
+                    返回将参数矩阵指定列设为指定列向量的矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="col">col从0起到列数减1</param>
+            <param name="colMatrix">列向量行数必须与参数矩阵行数相同</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.SetMatrixCol(MatrixTool.Matrix,MatrixTool.Matrix)">
+            <summary>
+                    返回将参数矩阵全部列设为指定列向量的矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="colMatrix">列向量的行数必须与参数矩阵行数相同</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.AddRow(MatrixTool.Matrix,MatrixTool.Matrix)">
+            <summary>
+                    返回将参数矩阵增加一个行向量的矩阵
+            </summary>
+            <param name="origin"></param>
+            <param name="rowMatrix">增加的行向量必须与参数矩阵列数相同</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.AddCol(MatrixTool.Matrix,MatrixTool.Matrix)">
+            <summary>
+                    返回将参数矩阵增加一个列向量的矩阵
+            </summary>
+            <param name="origin"></param>
+            <param name="colMatrix">增加的列向量必须与参数矩阵行数相同</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.RemoveRow(MatrixTool.Matrix,System.Int32)">
+            <summary>
+                    返回参数矩阵移去指定行的矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="row"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.RemoveCol(MatrixTool.Matrix,System.Int32)">
+            <summary>
+                    返回参数矩阵移去指定列的矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="col"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.MinOfRow(MatrixTool.Matrix)">
+            <summary>
+                    返回参数矩阵每一行最小值组成的列向量
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.MaxOfRow(MatrixTool.Matrix)">
+            <summary>
+                    返回参数矩阵每一行的最大值组成的列向量
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.MinOfCol(MatrixTool.Matrix)">
+            <summary>
+                    返回参数矩阵每一列最小值组成的行向量
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.MaxOfCol(MatrixTool.Matrix)">
+            <summary>
+                    返回参数矩阵每一列最大值组成的行向量
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.SumRow(MatrixTool.Matrix)">
+            <summary>
+                    返回参数矩阵所有行加到第一行组成的行向量
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.SumCol(MatrixTool.Matrix)">
+            <summary>
+                    返回参数矩阵所有列加到第一列组成的列向量
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.SumVector(MatrixTool.Matrix)">
+            <summary>
+                    返回参数向量各元素总和
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.MapMinMaxRow(MatrixTool.Matrix)">
+            <summary>
+                    返回一个两列矩阵,第一列为参数矩阵每一行最小值,第二列为参数矩阵每一行最大值
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.MapMinMaxOnCol(MatrixTool.Matrix)">
+            <summary>
+                    返回一个两行矩阵,第一行为参数矩阵每一列最小值,第二行为参数矩阵每一列最大值
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Positive(MatrixTool.Matrix)">
+            <summary>
+                    返回将参数矩阵每一个元素取为正号的矩阵
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Negative(MatrixTool.Matrix)">
+            <summary>
+                    返回将参数矩阵每一个元素取为负号的矩阵
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.Rank(MatrixTool.Matrix)">
+            <summary>
+                    返回参数矩阵的秩
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.RowSwitch(MatrixTool.Matrix,System.Int32,System.Int32)">
+            <summary>
+                    返回将参数矩阵指定行互换的矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="i"></param>
+            <param name="j"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.ColumnSwitch(MatrixTool.Matrix,System.Int32,System.Int32)">
+            <summary>
+                    返回将参数矩阵指定列互换的矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="i"></param>
+            <param name="j"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.RowMultiple(MatrixTool.Matrix,System.Int32,System.Double)">
+            <summary>
+                    返回将参数矩阵指定行倍乘的矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="i">指定行</param>
+            <param name="k">倍乘倍数</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.ColumnMultiple(MatrixTool.Matrix,System.Int32,System.Double)">
+            <summary>
+                    返回将采参数矩阵指定列倍乘的矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="i">指定列</param>
+            <param name="k">倍乘倍数</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.RowMulAdd(MatrixTool.Matrix,System.Int32,System.Double,System.Int32)">
+            <summary>
+                    返回参数矩阵指定行的倍加矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="i">目标行</param>
+            <param name="k">倍数</param>
+            <param name="j">源行</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.ColumnMulAdd(MatrixTool.Matrix,System.Int32,System.Double,System.Int32)">
+            <summary>
+                    返回参数矩阵指定列的倍加矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="i">目标列</param>
+            <param name="k">倍数</param>
+            <param name="j">源列</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.GetRandomNum">
+            <summary>
+                    返回一个伪随机数
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

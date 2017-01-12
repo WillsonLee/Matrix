@@ -3,3 +3,4 @@ D:\workdir\VSWorkspace\Matrix\Matrix\bin\Debug\Matrix.pdb
 D:\workdir\VSWorkspace\Matrix\Matrix\obj\Debug\Matrix.dll
 D:\workdir\VSWorkspace\Matrix\Matrix\obj\Debug\Matrix.pdb
 D:\workdir\VSWorkspace\Matrix\Matrix\obj\Debug\Matrix.csprojResolveAssemblyReference.cache
+D:\workdir\VSWorkspace\Matrix\Matrix\bin\Debug\Matrix.XML
