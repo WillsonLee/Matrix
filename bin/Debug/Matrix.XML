@@ -517,6 +517,30 @@
             <param name="x"></param>
             <returns></returns>
         </member>
+        <member name="M:MatrixTool.Matrix.FitCurve(MatrixTool.Matrix,MatrixTool.Matrix)">
+            <summary>
+                    返回由给出点拟合出的多次曲线参数列向量
+            </summary>
+            <param name="point_x">给出点x坐标的列向量</param>
+            <param name="point_y">给出点y坐标的列向量</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.ConcatenateByRow(MatrixTool.Matrix,MatrixTool.Matrix)">
+            <summary>
+            返回两个矩阵按行连接成的新矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.ConcatenateByCol(MatrixTool.Matrix,MatrixTool.Matrix)">
+            <summary>
+            返回两个矩阵按列连接成的新矩阵
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns></returns>
+        </member>
         <member name="M:MatrixTool.Matrix.RowSwitch(MatrixTool.Matrix,System.Int32,System.Int32)">
             <summary>
                     返回将参数矩阵指定行互换的矩阵

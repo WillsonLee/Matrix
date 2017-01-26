@@ -690,7 +690,7 @@ namespace MatrixTool
             if (detVal == 0)
                 throw new Exception("Reverse函数使用时,方阵的行列式为0不可逆");
             detVal = 1 / detVal;
-            return -(Matrix.CompanionMatrix(x) * detVal);//不知道为什么，答案就是差个负号
+            return Matrix.CompanionMatrix(x) * detVal;
         }
         /// <summary>
         ///         返回参数矩阵i行j列的余子式
@@ -1416,6 +1416,122 @@ namespace MatrixTool
                 {
                     result = i;
                     break;
+                }
+            }
+            return result;
+        }
+        /// <summary>
+        ///         返回由给出点拟合出的多次曲线参数列向量
+        /// </summary>
+        /// <param name="point_x">给出点x坐标的列向量</param>
+        /// <param name="point_y">给出点y坐标的列向量</param>
+        /// <returns></returns>
+        public static Matrix FitCurve(Matrix point_x, Matrix point_y)
+        {
+            if (point_x.rows < 2)
+                throw new Exception("FitCurve函数在使用时给出的数据点太少,无法拟合");
+            if (point_x.rows != point_y.rows)
+                throw new Exception("FitCurve函数在使用时数据点的x,y数据数量不一致");
+            if (point_x.columns != 1 || point_y.columns != 1)
+                throw new Exception("FitCurve函数在使用时给出点的横纵坐标不是列向量");
+            Matrix result;
+            Matrix para = new Matrix(point_x.rows, point_x.rows);
+            for (int i = 0; i < para.columns; i++)
+            {
+                para = Matrix.SetMatrixCol(para, i, Matrix.Pow(point_x, para.columns - i - 1));
+            }
+            try
+            {
+                result = Matrix.Reverse(para) * point_y;
+            }
+            catch (Exception)
+            {
+                throw new Exception("FitCurve函数在使用时出现不可求解方程");
+            }
+            return result;
+        }
+        /// <summary>
+        /// 返回两个矩阵按行连接成的新矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static Matrix ConcatenateByRow(Matrix x,Matrix y)
+        {
+            try
+            {
+                Matrix.GetRowVector(x, 0);//这一句并没有什么用只是为了测试x是否为null
+            }
+            catch (NullReferenceException)
+            {
+                return y;
+            }
+            try
+            {
+                Matrix.GetRowVector(y, 0);
+            }
+            catch (NullReferenceException)
+            {
+                return x;
+            }
+            if (x.rows != y.rows)
+                throw new Exception("ConcatenateByRow函数在使用时只能连接两个行数相同的矩阵");
+            Matrix result = new Matrix(x.rows, x.columns + y.columns);
+            for (int i = 0; i < result.rows; i++)
+            {
+                for (int j = 0; j < result.columns; j++)
+                {
+                    if (j < x.columns)
+                    {
+                        result.value[i, j] = x.value[i, j];
+                    }
+                    else
+                    {
+                        result.value[i, j] = y.value[i, j - x.columns];
+                    }
+                }
+            }
+            return result;
+        }
+        /// <summary>
+        /// 返回两个矩阵按列连接成的新矩阵
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static Matrix ConcatenateByCol(Matrix x, Matrix y)
+        {
+            try
+            {
+                Matrix.GetRowVector(x, 0);
+            }
+            catch (NullReferenceException)
+            {
+                return y;
+            }
+            try
+            {
+                Matrix.GetRowVector(y, 0);
+            }
+            catch (NullReferenceException)
+            {
+                return x;
+            }
+            if (x.columns != y.columns)
+                throw new Exception("ConcatenateByCol函数在使用时只能连接两个列数相同的矩阵");
+            Matrix result = new Matrix(x.rows + y.rows, x.columns);
+            for (int i = 0; i < result.rows; i++)
+            {
+                for (int j = 0; j < result.columns; j++)
+                {
+                    if (i < x.rows)
+                    {
+                        result.value[i, j] = x.value[i, j];
+                    }
+                    else
+                    {
+                        result.value[i, j] = y.value[i - x.rows, j];
+                    }
                 }
             }
             return result;
