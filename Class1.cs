@@ -581,11 +581,11 @@ namespace MatrixTool
             if (incre == 0)
                 throw new Exception("IncreaseVector函数使用时递增量为0错误");
             Matrix result = Matrix.Ones(1, (int)Math.Floor((end - begin) / incre) + 1);
-            double val = begin;
+            decimal val = (decimal)begin;
             for (int i = 0; i < result.columns; i++)
             {
-                result.value[0, i] = result.value[0, i] * val;
-                val += incre;
+                result.value[0, i] = result.value[0, i] * (double)val;
+                val += (decimal)incre;
             }
             return result;
         }
