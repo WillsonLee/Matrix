@@ -14,6 +14,9 @@ namespace MatrixTool
         int rows;
         int columns;
         double[,] value;
+        /// <summary>
+        /// 获取矩阵行数
+        /// </summary>
         public int Rows
         {
             get
@@ -25,6 +28,9 @@ namespace MatrixTool
                 rows = value;
             }
         }
+        /// <summary>
+        /// 获取矩阵列数
+        /// </summary>
         public int Columns
         {
             get
@@ -36,6 +42,9 @@ namespace MatrixTool
                 columns = value;
             }
         }
+        /// <summary>
+        /// 获取与设置矩阵元素值的二维数组
+        /// </summary>
         public double[,] Value
         {
             get
@@ -47,6 +56,12 @@ namespace MatrixTool
                 this.value = value;
             }
         }
+        /// <summary>
+        /// 获取与设置矩阵指定行列元素
+        /// </summary>
+        /// <param name="i">行号</param>
+        /// <param name="j">列号</param>
+        /// <returns></returns>
         public double this[int i, int j]//索引器
         {
             set
@@ -1844,8 +1859,12 @@ namespace MatrixTool
             }
             return result;
         }
-        public static bool operator ==(Matrix left, Matrix right)//默认left和right均不为null，使用时注意先判断null
+        public static bool operator ==(Matrix left, Matrix right)
         {
+            if (Matrix.IsNull(left) && Matrix.IsNull(right))
+                return true;
+            if (Matrix.IsNull(left) || Matrix.IsNull(right))
+                return false;
             if (left.rows != right.rows)
                 return false;
             if (left.columns != right.columns)
@@ -2195,6 +2214,18 @@ namespace MatrixTool
         {
             Random ran = new Random(Guid.NewGuid().GetHashCode());
             return ran.NextDouble();
+        }
+        public static bool IsNull(Matrix x)
+        {
+            try
+            {
+                int row_test = x.rows;
+                return false;
+            }
+            catch
+            {
+                return true;
+            }
         }
         #endregion
     }

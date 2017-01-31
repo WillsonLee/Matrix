@@ -603,5 +603,28 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="P:MatrixTool.Matrix.Rows">
+            <summary>
+            获取矩阵行数
+            </summary>
+        </member>
+        <member name="P:MatrixTool.Matrix.Columns">
+            <summary>
+            获取矩阵列数
+            </summary>
+        </member>
+        <member name="P:MatrixTool.Matrix.Value">
+            <summary>
+            获取与设置矩阵元素值的二维数组
+            </summary>
+        </member>
+        <member name="P:MatrixTool.Matrix.Item(System.Int32,System.Int32)">
+            <summary>
+            获取与设置矩阵指定行列元素
+            </summary>
+            <param name="i">行号</param>
+            <param name="j">列号</param>
+            <returns></returns>
+        </member>
     </members>
 </doc>
