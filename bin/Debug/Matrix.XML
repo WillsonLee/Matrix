@@ -417,6 +417,24 @@
             <param name="colMatrix">增加的列向量必须与参数矩阵行数相同</param>
             <returns></returns>
         </member>
+        <member name="M:MatrixTool.Matrix.InsertRow(MatrixTool.Matrix,MatrixTool.Matrix,System.Int32)">
+            <summary>
+                    返回矩阵插入一个行向量的矩阵
+            </summary>
+            <param name="origin">原矩阵</param>
+            <param name="rowMatrix">行向量</param>
+            <param name="row">插入行号</param>
+            <returns></returns>
+        </member>
+        <member name="M:MatrixTool.Matrix.InsertCol(MatrixTool.Matrix,MatrixTool.Matrix,System.Int32)">
+            <summary>
+                    返回插入列向量的矩阵
+            </summary>
+            <param name="origin">原矩阵</param>
+            <param name="colMatrix">列向量</param>
+            <param name="col">插入列号</param>
+            <returns></returns>
+        </member>
         <member name="M:MatrixTool.Matrix.RemoveRow(MatrixTool.Matrix,System.Int32)">
             <summary>
                     返回参数矩阵移去指定行的矩阵

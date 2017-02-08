@@ -1162,6 +1162,66 @@ namespace MatrixTool
             return result;
         }
         /// <summary>
+        ///         返回矩阵插入一个行向量的矩阵
+        /// </summary>
+        /// <param name="origin">原矩阵</param>
+        /// <param name="rowMatrix">行向量</param>
+        /// <param name="row">插入行号</param>
+        /// <returns></returns>
+        public static Matrix InsertRow(Matrix origin, Matrix rowMatrix, int row)
+        {
+            Matrix result = new Matrix(origin.rows + 1, origin.columns);
+            for (int i = 0; i < result.rows; i++)
+            {
+                for (int j = 0; j < result.columns; j++)
+                {
+                    if (i < row)
+                    {
+                        result.value[i, j] = origin.value[i, j];
+                    }
+                    else if (i == row)
+                    {
+                        result.value[i, j] = rowMatrix[0, j];
+                    }
+                    else
+                    {
+                        result.value[i, j] = origin.value[i - 1, j];
+                    }
+                }
+            }
+            return result;
+        }
+        /// <summary>
+        ///         返回插入列向量的矩阵
+        /// </summary>
+        /// <param name="origin">原矩阵</param>
+        /// <param name="colMatrix">列向量</param>
+        /// <param name="col">插入列号</param>
+        /// <returns></returns>
+        public static Matrix InsertCol(Matrix origin, Matrix colMatrix, int col)
+        {
+            Matrix result = new Matrix(origin.rows, origin.columns + 1);
+            for (int i = 0; i < result.rows; i++)
+            {
+                for (int j = 0; j < result.columns; j++)
+                {
+                    if (j < col)
+                    {
+                        result.value[i, j] = origin.value[i, j];
+                    }
+                    else if (j == col)
+                    {
+                        result.value[i, j] = colMatrix[i, 0];
+                    }
+                    else
+                    {
+                        result.value[i, j] = origin.value[i, j - 1];
+                    }
+                }
+            }
+            return result;
+        }
+        /// <summary>
         ///         返回参数矩阵移去指定行的矩阵
         /// </summary>
         /// <param name="x"></param>
