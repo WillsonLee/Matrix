@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace MatrixTool
 {
+    [Serializable]
     public class Matrix
     {
         /// <summary>
@@ -1882,57 +1883,121 @@ namespace MatrixTool
             return !(left == right);
         }
         //注意这里的逻辑运算与一般的不同，要保证所有元素符合逻辑式才成立,所以即使x!=y,x>y与x<y也可以同时不成立
-        public static bool operator >(Matrix x, Matrix y)//返回true仅表示x中所有元素大于y中所有元素,以下其他函数类似
+        public static Matrix operator >(Matrix x, Matrix y)
         {
             if (x.rows != y.rows || x.columns != y.columns)
-                return false;
-            bool flag = true;
+                throw new Exception("运算符两侧矩阵行列数不同不可做大小比较");
+            Matrix result = new Matrix(x.rows, x.columns);
             for (int i = 0; i < x.rows; i++)
             {
                 for (int j = 0; j < x.columns; j++)
                 {
-                    if (x.value[i, j] <= y.value[i, j])
+                    if (x.value[i, j] > y.value[i, j])
                     {
-                        flag = false;
-                        break;
+                        result.value[i, j] = 1;
+                    }
+                    else
+                    {
+                        result[i, j] = 0;
                     }
                 }
             }
-            return flag;
+            return result;
         }
-        public static bool operator >(Matrix x, double y)
+        public static Matrix operator >(Matrix x, double y)
         {
             return x > (Matrix.Ones(x.rows, x.columns) * y);
         }
-        public static bool operator >(double y, Matrix x)
+        public static Matrix operator >(double y, Matrix x)
         {
             return (Matrix.Ones(x.rows, x.columns) * y) > x;
         }
-        public static bool operator <(Matrix x, Matrix y)
+        public static Matrix operator >=(Matrix x, Matrix y)
         {
             if (x.rows != y.rows || x.columns != y.columns)
-                return false;
-            bool flag = true;
+                throw new Exception("运算符两侧矩阵行列数不同不可做大小比较");
+            Matrix result = new Matrix(x.rows, x.columns);
             for (int i = 0; i < x.rows; i++)
             {
                 for (int j = 0; j < x.columns; j++)
                 {
                     if (x.value[i, j] >= y.value[i, j])
                     {
-                        flag = false;
-                        break;
+                        result.value[i, j] = 1;
+                    }
+                    else
+                    {
+                        result[i, j] = 0;
                     }
                 }
             }
-            return flag;
+            return result;
         }
-        public static bool operator <(Matrix x, double y)
+        public static Matrix operator >=(Matrix x, double y)
+        {
+            return x >= (Matrix.Ones(x.rows, x.columns) * y);
+        }
+        public static Matrix operator >=(double y, Matrix x)
+        {
+            return (Matrix.Ones(x.rows, x.columns) * y) >= x;
+        }
+        public static Matrix operator <(Matrix x, Matrix y)
+        {
+            if (x.rows != y.rows || x.columns != y.columns)
+                throw new Exception("运算符两侧矩阵行列数不同不可做大小比较");
+            Matrix result = new Matrix(x.rows, x.columns);
+            for (int i = 0; i < x.rows; i++)
+            {
+                for (int j = 0; j < x.columns; j++)
+                {
+                    if (x.value[i, j] < y.value[i, j])
+                    {
+                        result.value[i, j] = 1;
+                    }
+                    else
+                    {
+                        result[i, j] = 0;
+                    }
+                }
+            }
+            return result;
+        }
+        public static Matrix operator <(Matrix x, double y)
         {
             return x < (Matrix.Ones(x.rows, x.columns) * y);
         }
-        public static bool operator <(double y, Matrix x)
+        public static Matrix operator <(double y, Matrix x)
         {
             return (Matrix.Ones(x.rows, x.columns) * y) < x;
+        }
+        public static Matrix operator <=(Matrix x, Matrix y)
+        {
+            if (x.rows != y.rows || x.columns != y.columns)
+                throw new Exception("运算符两侧矩阵行列数不同不可做大小比较");
+            Matrix result = new Matrix(x.rows, x.columns);
+            for (int i = 0; i < x.rows; i++)
+            {
+                for (int j = 0; j < x.columns; j++)
+                {
+                    if (x.value[i, j] <= y.value[i, j])
+                    {
+                        result.value[i, j] = 1;
+                    }
+                    else
+                    {
+                        result[i, j] = 0;
+                    }
+                }
+            }
+            return result;
+        }
+        public static Matrix operator <=(Matrix x, double y)
+        {
+            return x <= (Matrix.Ones(x.rows, x.columns) * y);
+        }
+        public static Matrix operator <=(double y, Matrix x)
+        {
+            return (Matrix.Ones(x.rows, x.columns) * y) <= x;
         }
         public static Matrix operator ~(Matrix x)
         {
